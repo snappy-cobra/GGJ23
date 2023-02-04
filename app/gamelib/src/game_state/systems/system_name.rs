@@ -2,7 +2,7 @@ use crate::game_state::GameState;
 use super::audio::system_play_audio;
 use super::motion::*;
 use super::actions::*;
-use super::render::system_render_meshes;
+use super::render::*;
 
 /**
  * Enumerates all systems that exist in the project.
@@ -16,7 +16,8 @@ pub enum SystemName {
     IntegrateMotion,
     BounceBounds,
     PlayAudio,
-    RenderMeshes
+    RenderMeshes,
+    RenderText,
 }
 
 impl SystemName {
@@ -30,6 +31,7 @@ impl SystemName {
             SystemName::BounceBounds => &system_bounce_bounds,
             SystemName::PlayAudio => &system_play_audio,
             SystemName::RenderMeshes => &system_render_meshes,
+            SystemName::RenderText => &system_render_text,
         }
     }
 }

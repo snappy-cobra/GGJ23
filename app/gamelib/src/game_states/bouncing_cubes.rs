@@ -5,6 +5,7 @@ use crate::game_state::GameState;
 use crate::game_state::components::audio::Audio;
 use crate::game_state::components::motion::{Position, Velocity};
 use crate::game_state::components::render::MeshInstance;
+use crate::game_state::components::render::Text;
 use crate::game_state::systems::system_name::SystemName;
 use crate::servers::audio::PlayMode;
 use crate::data_store::textured_model_name::TexturedModelName;
@@ -12,6 +13,7 @@ use crate::data_store::textured_model_name::TexturedModelName;
 use rand::rngs::SmallRng;
 use rand::RngCore;
 use rand::SeedableRng;
+use crate::alloc::string::ToString;
 
 /**
  * Build the bouncing cubes game state.
@@ -25,6 +27,7 @@ pub fn build() -> GameState {
     state.add_system(SystemName::IntegrateMotion);
     state.add_system(SystemName::BounceBounds);
     state.add_system(SystemName::RenderMeshes);
+    state.add_system(SystemName::RenderText);
     batch_spawn_entities(&mut state.world, 10);
     spawn_main_music(&mut state.world);
     return state;
@@ -59,6 +62,15 @@ fn batch_spawn_entities(world: &mut World, n: i32) {
             z: small_rng.next_u32() as f32 / u32::MAX as f32 * 0.1,
         };
         let mesh_instance = MeshInstance { model_name: TexturedModelName::Suzanne };
-        world.spawn((mesh_instance, position, velocity));
+
+        let text = Text {
+            x: 50,
+            y: 50,
+            text: "String".to_string(),
+            size: 30,
+            color: 0xFFFF00,
+        };
+
+        world.spawn((mesh_instance, position, velocity, text));
     }
 }

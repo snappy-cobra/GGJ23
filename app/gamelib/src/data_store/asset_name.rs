@@ -11,7 +11,8 @@ pub enum AssetName {
     TriangleTexture,
     SuzanneTexture,
     DemoMusic,
-    BoingSFX
+    BoingSFX,
+    FreeMonoBold,
 }
 
 impl AssetName {
@@ -29,6 +30,7 @@ impl AssetName {
             AssetName::SuzanneTexture => include_bytes!("data/Suz.png"),
             AssetName::DemoMusic => include_bytes!("data/DemoMusic.ogg"),
             AssetName::BoingSFX => include_bytes!("data/Boing.ogg"),
+            AssetName::FreeMonoBold => include_bytes!("data/FreeMonoBold.ttf"),
         }
     }
 }

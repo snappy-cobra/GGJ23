@@ -1,13 +1,14 @@
 use super::display_cache::DisplayCache;
 use super::indexed_model::{BYTE_SIZE_POSITION, BYTE_SIZE_TEX_COORD};
 use super::model_factory::ModelFactory;
+use super::text_factory::TextFactory;
 use super::textured_model::TexturedModel;
 use gamelib::data_store::asset_name::AssetName;
 use gamelib::data_store::textured_model_name::TexturedModelName;
 use gamelib::game_state::components::render::MeshInstance;
 use gamelib::{
     game_state::components::motion::Position, game_state::components::motion::Velocity,
-    game_state::GameState, servers::renderer::RenderServer,
+    game_state::components::render::Text, game_state::GameState, servers::renderer::RenderServer,
 };
 use grrustlib::*;
 use hecs::*;
@@ -25,6 +26,7 @@ use wavefront::{Obj, Vertex};
 /// and cleanup happens automatically on drop.
 pub struct WiiRenderServer {
     model_factory: ModelFactory,
+    text_factory: TextFactory,
     display_cache: DisplayCache,
 }
 
@@ -38,6 +40,7 @@ impl WiiRenderServer {
     pub fn new() -> Self {
         let res = Self {
             model_factory: ModelFactory::new(),
+            text_factory: TextFactory::new(),
             display_cache: DisplayCache::new(),
         };
         res.init_render();
@@ -59,12 +62,53 @@ impl WiiRenderServer {
 
     /// Render a single entity
     fn render_entity(&mut self, model_name: &TexturedModelName, position: &Position) {
+        let temp = self.text_factory.font.unwrap();
+
         unsafe {
+            GRRLIB_PrintfTTF(50, 50, temp, "TEST".as_ptr(), 12, 0xFFFFFFFF);
+
             GRRLIB_3dMode(0.1, 1000.0, 45.0, false, false);
             GRRLIB_ObjectView(
                 position.x, position.y, position.z, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
             );
             self.render_textured_model(model_name);
+        }
+    }
+
+    fn render_text(&mut self, text: &Text) {
+        // Fill a table with characters
+        // let i: libc::wchar_t = 0;
+        // let mut n: usize = 0;
+        // let mut charTable: [libc::wchar_t; 460] = [0; 460];
+        // for i in 33..126 {
+        //     charTable[n] = i;
+        //     n += 1;
+        // }
+        // for i in 161..518 {
+        //     charTable[n] = i;
+        //     n += 1;
+        // }
+        // for i in 9824..9831 {
+        //     charTable[n] = i;
+        //     n += 1;
+        // }
+
+        // let mut Letter: [libc::wchar_t; 10] = [0; 10];
+        // Letter[0] = charTable[12];
+        // Letter[1] = charTable[22];
+        // Letter[2] = charTable[32];
+        // Letter[3] = charTable[42];
+        // Letter[4] = charTable[52];
+        // Letter[5] = charTable[62];
+        // Letter[6] = charTable[72];
+        // Letter[7] = charTable[82];
+
+        // let mut FPS[255];
+        // snprintf(FPS, sizeof(FPS), "Current FPS: %d", 30.0);
+
+        let temp = self.text_factory.font.unwrap();
+        unsafe {
+            GRRLIB_PrintfTTF(500, 25, temp, "TEST".as_ptr(), 12, 0xFFFFFFFF);
         }
     }
 
@@ -163,6 +207,18 @@ impl RenderServer for WiiRenderServer {
     fn render_meshes(&mut self, meshes: Vec<(&MeshInstance, &Position)>) {
         for (mesh_instance, position) in meshes {
             self.render_entity(&mesh_instance.model_name, position);
+        }
+    }
+
+    fn render_text(&mut self, texts: Vec<&Text>) {
+        unsafe {
+            GRRLIB_DrawImg(0.0, 0.0, copiedImg, 0.0, 1.0, 1.0, 0xFFFFFFFF);
+
+            for text in texts {
+                self.render_text(&text);
+            }
+
+            GRRLIB_Screen2Texture(0, 0, copiedImg, false);
         }
     }
 
