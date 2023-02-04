@@ -12,7 +12,7 @@ use test_display_cache::test_display_cache;
 pub fn tests() -> HashMap<&'static str, fn()> {
     let mut tests: HashMap<&'static str, fn()> = HashMap::new();
 
-    tests.insert("Trivial test", || assert!(true));
+    // tests.insert("Trivial test", || assert!(true));
     test_model_factory(&mut tests);
     test_display_cache(&mut tests);
 

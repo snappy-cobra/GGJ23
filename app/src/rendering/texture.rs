@@ -24,7 +24,7 @@ impl Texture {
             if grrlib_texture.is_null() {
                 return Err("Image could not be loaded");
             }
-            return Ok(Texture { grrlib_texture });
+            Ok(Texture { grrlib_texture })
         }
     }
 

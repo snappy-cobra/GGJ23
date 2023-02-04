@@ -56,7 +56,7 @@ impl IndexedModel {
                 })
             })
             .collect();
-        return (positions, position_indices);
+        (positions, position_indices)
     }
 
     /**
@@ -79,6 +79,6 @@ impl IndexedModel {
                 })
             })
             .collect();
-        return (tex_coords, tex_coord_indices);
+        (tex_coords, tex_coord_indices)
     }
 }

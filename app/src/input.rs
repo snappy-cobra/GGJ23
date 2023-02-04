@@ -51,9 +51,9 @@ impl InputManager {
             .iter()
             .map(|x| x.to_wii_mote_control())
             .collect::<Vec<WiiMoteControl>>();
-        return Controls {
+        Controls {
             wii_mote_controls: wii_mote_controls,
-        };
+        }
     }
 }
 
@@ -141,11 +141,11 @@ impl WiiMoteState {
             Some(m) => motion_control = Some(m.to_motion_control()),
         }
 
-        return WiiMoteControl {
+        WiiMoteControl {
             motion: motion_control,
             home_button_down: self.wii_mote.is_button_down(Button::Home),
             one_button_down: self.wii_mote.is_button_down(Button::One),
-        };
+        }
     }
 }
 
@@ -273,7 +273,7 @@ fn process_gforce(
         (corrected_gforce.0.powi(2) + corrected_gforce.1.powi(2) + corrected_gforce.2.powi(2))
             .sqrt();
     // (corrected_gforce.0.powi(2) + corrected_gforce.2.powi(2)).sqrt();
-    return (total_gforce, corrected_gforce);
+    (total_gforce, corrected_gforce)
 }
 
 /// Finds the largest absolute value of the three dimensions and checks if it is positive or negative.

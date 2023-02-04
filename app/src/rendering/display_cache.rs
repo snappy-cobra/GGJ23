@@ -15,9 +15,9 @@ pub struct DisplayCache {
 
 impl DisplayCache {
     pub fn new() -> Self {
-        return Self {
+        Self {
             display_list_map: Default::default(),
-        };
+        }
     }
 
     pub fn get_display_list(&mut self, key: &TexturedModelName) -> &mut DisplayList {
@@ -25,7 +25,7 @@ impl DisplayCache {
             self.display_list_map
                 .insert(key.clone(), DisplayList::new());
         }
-        return self.display_list_map.get_mut(key).unwrap();
+        self.display_list_map.get_mut(key).unwrap()
     }
 }
 

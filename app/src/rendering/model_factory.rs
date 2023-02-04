@@ -68,12 +68,8 @@ impl ModelFactory {
         let raw_data = name.to_data();
         let string_data = from_utf8(raw_data).unwrap();
         match Obj::from_lines(string_data.lines()) {
-            Ok(object) => {
-                return Ok(IndexedModel::new(&object));
-            }
-            Err(_error) => {
-                return Err("Error loading indexed model from OBJ data.");
-            }
+            Ok(object) => Ok(IndexedModel::new(&object)),
+            Err(_error) => Err("Error loading indexed model from OBJ data."),
         }
     }
 
@@ -81,6 +77,6 @@ impl ModelFactory {
      * Return the given model.
      */
     pub fn get_model(&self, key: &TexturedModelName) -> Option<&TexturedModel> {
-        return self.models.get(key);
+        self.models.get(key)
     }
 }

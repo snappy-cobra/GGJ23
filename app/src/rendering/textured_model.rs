@@ -15,6 +15,6 @@ pub struct TexturedModel {
  */
 impl TexturedModel {
     pub fn new(model: IndexedModel, texture: Texture) -> TexturedModel {
-        return TexturedModel { model, texture };
+        TexturedModel { model, texture }
     }
 }
