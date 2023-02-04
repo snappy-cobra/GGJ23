@@ -1,8 +1,8 @@
-use crate::game_state::{GameState, components::game::Platform};
+use crate::game_state::GameState;
 
 /**
  * Move the Platform.
  */
-pub fn system_moving_platform(state: &mut GameState) {
+pub fn system_moving_platform(_state: &mut GameState) {
     
 }

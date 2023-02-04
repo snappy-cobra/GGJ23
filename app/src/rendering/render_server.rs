@@ -191,7 +191,7 @@ impl RenderServer for WiiRenderServer {
     }
 
     fn render_debug(&mut self, data: Vec<(&Position, &SphereCollider, &Rotation)>) {
-        for (pos, collider, rot) in data {
+        for (pos, _collider, rot) in data {
             self.render_entity(&TexturedModelName::Cube, pos, rot);
         }
     }
@@ -209,7 +209,7 @@ impl RenderServer for WiiRenderServer {
         // TODO: make this not happen every iteration
         for collider in colliders.iter_mut() {
             if !collider.has_been_registered {
-                /// POOTAATOO
+                // POOTAATOO
                 let joints = vec![
                     Joint::new(Vec3(0.0, 7.7, 0.0), 0.4),
                     Joint::new(Vec3(0.0, 8.0, 0.0), 1.0),
