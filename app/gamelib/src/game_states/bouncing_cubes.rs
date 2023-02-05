@@ -16,7 +16,6 @@ use rand::rngs::SmallRng;
 use rand::RngCore;
 use rand::SeedableRng;
 use crate::game_state::components::physics::SphereCollider;
-use crate::game_state::components::controller_assignment::{ControllerAssignment, FryAssignment};
 
 /**
  * Build the bouncing cubes game state.
@@ -31,10 +30,12 @@ pub fn build() -> GameState {
     // state.add_system(SystemName::ShakeAction);
     // state.add_system(SystemName::IntegrateMotion);
     // state.add_system(SystemName::BounceBounds);
+    state.add_system(SystemName::ScoreFryingPan);
     state.add_system(SystemName::PatatoControl);
     state.add_system(SystemName::PhysicsToPosition);
     state.add_system(SystemName::RenderMeshes);
     state.add_system(SystemName::CameraUpdate);
+    state.add_system(SystemName::TeleportPotatoes);
     state.add_system(SystemName::ResetLevel);
 
     batch_spawn_entities(&mut state.world, 8);
@@ -58,13 +59,13 @@ fn spawn_main_music(world: &mut World) {
 fn batch_spawn_entities(world: &mut World, n: i32) {
     let cam_position = Position {
         x: 0.0,
-        y: 22.5,
-        z: 20.0,
+        y: 27.5,
+        z: 25.0,
     };
     let camera = Camera {
         r: 0x00,        g: 0x00,        b: 0x00,
         up_x: 0.0,      up_y: 1.0,      up_z: 0.0,
-        lookat_x: 0.0,  lookat_y: 0.0,  lookat_z: 0.0,
+        lookat_x: 0.0,  lookat_y: -6.0,  lookat_z: 0.0,
     };
     world.spawn((camera, cam_position));
 
@@ -106,19 +107,6 @@ fn batch_spawn_entities(world: &mut World, n: i32) {
     let plate_rotation = Rotation { x: 0.0, y: 0.0, z: 0.0 };
     world.spawn((plate_mesh, plate_position, plate_rotation));
 
-    //Creating fryingpans
-    for i in 0..3 {
-        let fry_mesh = MeshInstance { model_name: TexturedModelName::FryPanBlack };
-        let fry_position = Position{
-            x: i as f32 *10.0-15.0,
-            y: 0.0,
-            z: 0.0,
-        };
-        let fry_rotation = Rotation { x: 0.0, y: 0.0, z: 0.0 };
-        let fry_assignment = FryAssignment{id: i, score: 0};
-        world.spawn((fry_mesh, fry_position, fry_rotation, fry_assignment));
-    }
-
     // Oil
     let oil_mesh = MeshInstance { model_name: TexturedModelName::OilSea };
     let oil_position = Position{
@@ -142,7 +130,7 @@ fn batch_spawn_entities(world: &mut World, n: i32) {
             z: z,
         };
         let bubble_animation = Animation {
-            duration: small_rng.next_u32() as f32 / u32::MAX as f32 * 2.0,
+            duration: 0.5 + small_rng.next_u32() as f32 / u32::MAX as f32 * 2.0,
             past_time: small_rng.next_u32() as f32 / u32::MAX as f32 * 2.0,
             animation_type: AnimationType::Bubble,
             on_animation_finish: OnAnimationFinish::RepeatBubble,
