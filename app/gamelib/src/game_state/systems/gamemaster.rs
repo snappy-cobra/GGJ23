@@ -91,7 +91,7 @@ pub fn system_animation(state: &mut GameState) {
     for (id, (pos, animation)) in state.world.query_mut::<(&mut Position, &mut Animation)>() {
         animation.past_time += state.changes.delta_time.as_secs_f32();
         let movement_size = 15.0;
-        let movement_radius = 15.0;
+        let movement_radius = 13.5;
         let delay = 0.2;
         match animation.animation_type {
             AnimationType::None => {}
@@ -236,8 +236,9 @@ pub fn system_animation(state: &mut GameState) {
                 OnAnimationFinish::Start => {
                     print!("switch to Start");
                     startPlaying = true;
-                    to_remove.push(id); 
-
+                    to_remove.push(id);
+                    let offset = 30.0;
+                    print!("offset {:?}", offset);
                     let y = -10.0;
                     //Creating fryingpans
                     let fry_0_mesh = MeshInstance { model_name: TexturedModelName::FryPanBlack };
@@ -246,8 +247,8 @@ pub fn system_animation(state: &mut GameState) {
                     let fry_0_assignment = FryAssignment{id: 0, score: 0};
                     let fry_0_animation = Animation {
                         duration: 5.0,
-                        past_time: 0.0,
-                        animation_type: AnimationType::Fryer0,
+                        past_time: 0.0*offset,
+                        animation_type: AnimationType::FryerSpin0,
                         on_animation_finish: OnAnimationFinish::Fryer,
                         target_x: 0.0,
                         target_y: y,
@@ -261,8 +262,8 @@ pub fn system_animation(state: &mut GameState) {
                     let fry_1_assignment = FryAssignment{id: 1, score: 0};
                     let fry_1_animation = Animation {
                         duration: 5.0,
-                        past_time: 0.0,
-                        animation_type: AnimationType::Fryer1,
+                        past_time: 0.25*offset,
+                        animation_type: AnimationType::FryerSpin0,
                         on_animation_finish: OnAnimationFinish::Fryer,
                         target_x: 0.0,
                         target_y: y,
@@ -276,8 +277,8 @@ pub fn system_animation(state: &mut GameState) {
                     let fry_2_assignment = FryAssignment{id: 2, score: 0};
                     let fry_2_animation = Animation {
                         duration: 5.0,
-                        past_time: 0.0,
-                        animation_type: AnimationType::Fryer2,
+                        past_time: 0.5*offset,
+                        animation_type: AnimationType::FryerSpin0,
                         on_animation_finish: OnAnimationFinish::Fryer,
                         target_x: 0.0,
                         target_y: y,
@@ -291,8 +292,8 @@ pub fn system_animation(state: &mut GameState) {
                     let fry_3_assignment = FryAssignment{id: 3, score: 0};
                     let fry_3_animation = Animation {
                         duration: 5.0,
-                        past_time: 0.0,
-                        animation_type: AnimationType::Fryer3,
+                        past_time: 0.75*offset,
+                        animation_type: AnimationType::FryerSpin0,
                         on_animation_finish: OnAnimationFinish::Fryer,
                         target_x: 0.0,
                         target_y: y,
