@@ -38,7 +38,7 @@ pub fn build() -> GameState {
     state.add_system(SystemName::TeleportPotatoes);
     state.add_system(SystemName::ResetLevel);
 
-    batch_spawn_entities(&mut state.world, 8);
+    batch_spawn_entities(&mut state.world);
     spawn_main_music(&mut state.world);
     
     //state.add_system(SystemName::DebugPhysics);
@@ -56,7 +56,7 @@ fn spawn_main_music(world: &mut World) {
 /**
  * Spawn multiple entities in the world
  */
-fn batch_spawn_entities(world: &mut World, n: i32) {
+fn batch_spawn_entities(world: &mut World) {
     let cam_position = Position {
         x: 0.0,
         y: 27.5,
@@ -69,33 +69,7 @@ fn batch_spawn_entities(world: &mut World, n: i32) {
     };
     world.spawn((camera, cam_position));
 
-    // Potato's
-    let mut small_rng = SmallRng::seed_from_u64(10u64);
-    for index in 0..n {
-        const ROW_WIDTH: i32 = 10;
-        let pos_x: f32 = (index % ROW_WIDTH) as f32;
-        let pos_z: f32 = (index / ROW_WIDTH) as f32;
-
-        let position = Position {
-            x: pos_x,
-            y: 0.0,
-            z: pos_z,
-        };
-        let velocity = Velocity {
-            x: small_rng.next_u32() as f32 / u32::MAX as f32 * 0.1,
-            y: small_rng.next_u32() as f32 / u32::MAX as f32 * 0.1,
-            z: small_rng.next_u32() as f32 / u32::MAX as f32 * 0.1,
-        };
-        let rotation = Rotation { x: 0.0, y: 0.0, z: 0.0 };
-        
-        let mesh_instance = MeshInstance { model_name: TexturedModelName::Potato };
-        let sphere_collider = SphereCollider{radius: 1.0, gravity: true, body_index: 0, has_been_registered: false};
-        let controller_assignment = ControllerAssignment{
-            id: 0,
-        };
-
-        world.spawn((mesh_instance, position, velocity, rotation, sphere_collider, controller_assignment));
-    }
+    let mut small_rng = SmallRng::seed_from_u64(10u64);    
 
     // Plate
     let plate_mesh = MeshInstance { model_name: TexturedModelName::Plate };

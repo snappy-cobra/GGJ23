@@ -24,6 +24,7 @@ pub enum OnAnimationFinish {
     Hand0,
     Start,
     Fryer,
+    Restart,
 }
 
 pub enum AnimationType {
@@ -34,6 +35,7 @@ pub enum AnimationType {
     Fryer1,
     Fryer2,
     Fryer3,
+    FryerWin,
     Bubble,
     HandIn,
     Hand,
