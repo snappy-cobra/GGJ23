@@ -29,6 +29,7 @@ pub enum OnAnimationFinish {
 pub enum AnimationType {
     None,
     Test,
+    FryerSpin0,
     Fryer0,
     Fryer1,
     Fryer2,

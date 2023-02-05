@@ -150,7 +150,9 @@ pub fn system_animation(state: &mut GameState) {
 
     for (id, (pos, animation)) in state.world.query_mut::<(&mut Position, &mut Animation)>() {
         animation.past_time += state.changes.delta_time.as_secs_f32();
-
+        let movement_size = 15.0;
+        let movement_radius = 15.0;
+        let delay = 0.2;
         match animation.animation_type {
             AnimationType::None => {}
             AnimationType::Test => {
@@ -161,17 +163,21 @@ pub fn system_animation(state: &mut GameState) {
             AnimationType::Bubble => {
                 pos.y += state.changes.delta_time.as_secs_f32();
             }
+            AnimationType::FryerSpin0 => {
+                pos.x = (animation.past_time * delay).sin() * movement_radius;
+                pos.z = (animation.past_time * delay).cos() * movement_radius;
+            }
             AnimationType::Fryer0 => {
-                pos.x = (animation.past_time * 0.35 + 0.01).sin() * 10.0 + (animation.past_time * 1.07 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
-                pos.z = (animation.past_time * 0.23 + 0.21).cos() * 10.0 + (animation.past_time * 1.13 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
+                pos.x = (animation.past_time * 0.35 + 0.01).sin() * movement_size + (animation.past_time * 1.07 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
+                pos.z = (animation.past_time * 0.23 + 0.21).cos() * movement_size + (animation.past_time * 1.13 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
             }
             AnimationType::Fryer1 => {
-                pos.x = (animation.past_time * 0.37 + 0.45).sin() * 10.0 + (animation.past_time * 1.17 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
-                pos.z = (animation.past_time * 0.25 + 8.41).cos() * 10.0 + (animation.past_time * 1.43 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
+                pos.x = (animation.past_time * 0.37 + 0.45).sin() * movement_size + (animation.past_time * 1.17 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
+                pos.z = (animation.past_time * 0.25 + 8.41).cos() * movement_size + (animation.past_time * 1.43 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
             }
             AnimationType::Fryer2 => {
-                pos.x = (animation.past_time * 0.22 + 5.11).sin() * 10.0 + (animation.past_time * 1.14 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
-                pos.z = (animation.past_time * 0.42 + 2.53).cos() * 10.0 + (animation.past_time * 1.15 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
+                pos.x = (animation.past_time * 0.22 + 5.11).sin() * movement_size + (animation.past_time * 1.14 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
+                pos.z = (animation.past_time * 0.42 + 2.53).cos() * movement_size + (animation.past_time * 1.15 + 0.43).cos() * 2.0 + (animation.past_time * 1.83 + 1.84).cos();
             }
             AnimationType::Fryer3 => {
                 pos.x = (animation.past_time * 0.32 + 9.01).sin() * 10.0 + (animation.past_time * 1.15 + 0.03).sin() * 2.0 + (animation.past_time * 1.47 + 5.31).sin();
